@@ -14,8 +14,7 @@ int main(void)
 
     int top = !! (number & mask ) ;
     int top2 = !! ((number -1)  & mask) ;
-
-    printf("%d \n", -  top  + (1 - top ) * (1 - top2 ));
+    printf("%d \n", -  top  + ((1 - top ) & (1 - top2 )));
 
 return 0;
 
