@@ -54,14 +54,12 @@ int main (void)
        { int  IntNum ;
          float FloatNum;
        } num;
-    float num1, num2;
-    printf("Введите число ");
-    scanf("%d %f", &num.IntNum, &num2);
-    //num1 = num1 / num2;
-    //num.IntNum = num1;
-    printf ("%d", num.IntNum);
-   // division(num.IntNum );
+    float num1,num2;
+    printf("Введите 2 числа ");
+    scanf("%f %f", &num1, &num2);
+    num1 = num1 / num2;
+    num.FloatNum = num1;
+    division(num.IntNum);
 
-
-       return (0);
+    return (0);
   }
