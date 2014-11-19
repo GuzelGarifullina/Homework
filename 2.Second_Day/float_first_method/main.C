@@ -20,7 +20,7 @@ int print (FloatNum floatnum)
 
       // Infinity
       if ((floatnum.exponent == maxEXP) && (floatnum.coefficient == 0))
-        { if (floatnum.sign) // sign
+        { if (floatnum.sign == 1) // sign
             printf ("+∞ \n");
           else  printf ("-∞ \n");
           return (0);
@@ -39,9 +39,9 @@ int print (FloatNum floatnum)
 void division (int num)
     { FloatNum floatnum;
       floatnum.sign = - (num >> 31 & 1);
-      if (! floatnum.sign)
-        { floatnum.sign = 1;
-        }
+      if (! floatnum.sign) {
+          floatnum.sign = 1;
+      }
       const int mask = 0xff ; // to take only last 8 numbers (size of exponent is 8 bits)
       floatnum.exponent = (num >> 23) & mask;
       const int mask2 = 0x7fffff; //last 23 bits
@@ -51,10 +51,10 @@ void division (int num)
 
 int main (void)
  { float num1, num2;
-    printf("Введите число ");
+    printf("Введите 2 числа ");
     scanf("%f %f", &num1, &num2);
     num1 = num1 / num2;
-    division(*(int *)(& num1) );
+    division(*(int *)(&num1) );
 
        return (0);
   }

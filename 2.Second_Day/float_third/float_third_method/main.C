@@ -20,7 +20,7 @@ int print (FloatNum floatnum)
 
       // Infinity
       if ((floatnum.exponent == maxEXP) && (floatnum.coefficient == 0))
-        { if (floatnum.sign) // sign
+        { if (!floatnum.sign) // sign
             printf ("+∞ \n");
           else  printf ("-∞ \n");
           return (0);

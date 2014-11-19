@@ -20,7 +20,7 @@ int print (FloatNum floatnum)
 
       // Infinity
       if ((floatnum.exponent == maxEXP) && (floatnum.coefficient == 0))
-        { if (floatnum.sign) // sign
+        { if (floatnum.sign == 1) // sign
             printf ("+∞ \n");
           else  printf ("-∞ \n");
           return (0);
@@ -51,7 +51,7 @@ void division (int num)
 
 int main (void)
  { float num1, num2;
-    printf("Введите число ");
+    printf("Введите 2 числа ");
     scanf("%f %f", &num1, &num2);
 
     int floatValue;
