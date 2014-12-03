@@ -58,7 +58,7 @@ int main (void)
     printf("Введите 2 числа ");
     scanf("%f %f", &num1, &num2);
     num1 = num1 / num2;
-    num.FloatNum = num1;
+    num.FloatNum = num1 / num2;
     division(num.IntNum);
 
     return (0);
