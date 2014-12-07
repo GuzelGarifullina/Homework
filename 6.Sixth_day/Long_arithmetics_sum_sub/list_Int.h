@@ -1,11 +1,7 @@
-
-#define TERM_OF_EXIT 'e'// we will read till 'e'-exit
 struct NODE {
     int value;
     struct NODE *next;
 };
-
-void skip_spaces(char *ch); // read till find symbol(that not space)
 
 void push_to_list_Int (NODE **head , int new_elem);//create new node and puts number
 int pop_elem_list_Int(NODE **head);//take value and free
@@ -15,14 +11,6 @@ void del_head_elem_list_Int(NODE **head);//free head element
 void remove_elem_list_Int(NODE **head, int num);
 void print_list_Int (const NODE *head); //print list
 void  del_list_Int(NODE **head);// delete list
-
-
-// skip spaces
-void skip_spaces (char *ch){
-    while (isspace(*ch)){
-        scanf("%c", ch);
-    }
-}
 
 
 // find and remove first element that equals num
@@ -54,7 +42,7 @@ void remove_elem_list_Int(NODE **head, int num){
 // print elements of list
 void print_list_Int (const NODE *head){
     while (head){
-        printf("%d, ", head->value);
+        printf("%d", head->value);
         head = head->next;
     }
     printf("\n");
@@ -94,7 +82,7 @@ int pop_head_list_Int(NODE **head){
 // delete head element
 void del_head_elem_list_Int(NODE **head){
     if (*head == NULL) { //case when list is empty
-        exit(-1);
+       return;
     }
     NODE *prev = (*head);
     (*head) = (*head)->next;

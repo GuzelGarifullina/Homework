@@ -11,7 +11,7 @@
 
 
 int main(void) {
-    NODE *head = NULL; // head of Node
+    NODE *head = NULL; //create null list
 
     printf("Начните ввод\n");
     char ch;
@@ -24,14 +24,14 @@ int main(void) {
             switch (ch) {
                 case 'a':
                     scanf("%d",&num) ;
-                    push_to_list_Int(&head, num);
+                    push_to_list_Int(&head, num);// pushes num to the head of list
                     break;
                 case 'r':
                     scanf("%d",&num) ;
                     remove_elem_list_Int(&head, num);//delete first element that equals to num
                      break;
                 case 'p':
-                    print_list_Int (head);
+                    print_list_Int (head);// print list from head to the last element
                     break;
             default:
                 printf("Error!\n");    // stop reading and program
@@ -43,6 +43,6 @@ int main(void) {
     } while (ch !=  TERM_OF_EXIT ) ;     // read  until operator "e" - exit
 
 
-    del_list_Int(&head);
+    del_list_Int(&head); // free memory
     return (0);
-};
+}
