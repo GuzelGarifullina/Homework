@@ -5,20 +5,22 @@
 
 #include "list_Int.h" // make one-way linked list and works with it
 
-struct Long_num_list {   //
+typedef enum {positive = 1, negative = -1, empty = 0} signifier;
+
+struct Long_num_list {
     NODE *head;
-    int sign;   // "1" positive, "-1" negative
+    int sign;
 };
 
-void read_Long_num_list (Long_num_list (*num));//skips till finds sigh  or digit
+void read_Long_num_list (Long_num_list *num);//skips till finds sigh  or digit
                                           // reads to list long number
 void write_Long_num_list (Long_num_list num); // writes number
 
-void del_Long_num_list (Long_num_list (*num)); // deletes long num
+void del_Long_num_list (Long_num_list *num); // deletes long num
 
 // general
-void sum_Long_Int_list (Long_num_list (*c),const Long_num_list a,const Long_num_list b);
-void sub_Long_Int_list (Long_num_list (*c),const Long_num_list a,const Long_num_list b);
+void sum_Long_Int_list (Long_num_list *c, const Long_num_list a, const Long_num_list b);
+void sub_Long_Int_list (Long_num_list *c, const Long_num_list a, const Long_num_list b);
 
 
 // sum case when a and b have one sign
@@ -37,15 +39,17 @@ Long_num_list neg_Long_Num_list (Long_num_list num);
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-// skips trash and reads to list long number
-void read_Long_num_list (Long_num_list (*num)){
+// skips trash and reads to list long number(at first make it empty)
+void read_Long_num_list (Long_num_list *num){
     char ch;
 
     do {
         scanf("%c",&ch);
     } while ( (ch!= '-') && !(isdigit(ch)) ); //reads till finds negative sign or digit
 
-    num->head = NULL; //ensures that head is empty
+    del_Long_num_list(num);
+
+   // num->head = NULL; //ensures that head is empty
 
     // sets the sign
     if (ch == '-') {
@@ -53,14 +57,14 @@ void read_Long_num_list (Long_num_list (*num)){
     }
     else {
         num->sign = 1;
-        push_to_list_Int (& (num->head) , ch - '0'); // puts first digit of num
+        push_to_list_Int (&(num->head) , ch - '0'); // puts first digit of num
     }
 
     scanf("%c",&ch); // next elem
 
     // puts number to list
     while  (isdigit(ch)) {
-        push_to_list_Int (& (num->head) , ch - '0');
+        push_to_list_Int (&(num->head) , ch - '0');
         scanf("%c",&ch); // next elem
 
     }
@@ -96,12 +100,12 @@ void del_Long_num_list (Long_num_list (*num)){
 
 
 // general
-void sum_Long_Int_list (Long_num_list (*c),const Long_num_list a,const Long_num_list b){
-    if (a.sign*b.sign == 1){
+void sum_Long_Int_list (Long_num_list *c, const Long_num_list a, const Long_num_list b){
+    if (a.sign*b.sign == positive){
         sum_Long (c,a,b); // in sum elements have one sign
     }
-    else if (a.sign == 1){// b.sign = -1
-        sub_Long_pos( c,a, neg_Long_Num_list(b)); // in sub all elements positive
+    else if (a.sign == positive){// b.sign = -1
+        sub_Long_pos(c, a, neg_Long_Num_list(b)); // in sub all elements positive
     }
     else {// a.sign = -1 , b.sign = 1 (-a +b)
         sub_Long_pos( c, neg_Long_Num_list(a), b);// value = a - b
@@ -116,7 +120,6 @@ void sub_Long_Int_list (Long_num_list (*c),const Long_num_list a,const Long_num_
 // c = a + b when a and b have one sign
 void sum_Long(Long_num_list *c, Long_num_list a, Long_num_list b){ // const a, b
     int higher = 0; // jumps to next rank
-    del_Long_num_list(c); // to be sure that we free memory
     c->sign = a.sign;
 
     int sum; //sum = a + b + higher

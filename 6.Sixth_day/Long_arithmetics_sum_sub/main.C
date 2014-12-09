@@ -9,7 +9,10 @@ int main(void) {
     printf("Введите 2 числа \n");
     Long_num_list a, b, c; // struct sign and head of list
 
+    a.head = NULL;
     read_Long_num_list (&a);
+
+    b.head = NULL;
     read_Long_num_list (&b);
 
     c.head = NULL;
