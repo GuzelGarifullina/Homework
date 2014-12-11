@@ -3,9 +3,10 @@
 
 #include <stdio.h>
 #include <string.h>
+#define Maxlength 2000
 
 struct String
-{ char STR[2000];
+{ char STR[Maxlength];
   int Length;
 };
 
@@ -14,8 +15,8 @@ int main(void) {
     //reading n
     String origin, sub;
     printf("Введите стороку и построку \n");
-    fgets (origin.STR, 2000, stdin );
-    fgets (sub.STR, 2000, stdin);
+    fgets (origin.STR, Maxlength, stdin );
+    fgets (sub.STR, Maxlength, stdin);
 
     // Fix origin and sub
     origin.Length = strlen( origin.STR ) - 1; //cause here will be additional elem = "/n"
@@ -23,9 +24,10 @@ int main(void) {
     //sub
     sub.Length = strlen( sub.STR ) - 1; //cause here will be additional elem = "/n"
     sub.STR [sub.Length] = '\0';
+
     printf("Количество вхождений строки '%s' в строку '%s'' = ", sub.STR, origin.STR);
 
-    //main part
+  //main part
     //case with empty lines
     if ( (origin.Length == 0) || (sub.Length == 0) )
     {   printf("0\n");

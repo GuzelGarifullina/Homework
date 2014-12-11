@@ -28,10 +28,6 @@ void skip_spaces (char *ch){
 // find and remove first element that equals num
 void remove_elem_list_Int(NODE **head, int num){
     NODE *cursor = (*head); // delete head element
-    if (! cursor){
-        printf("Error!Cannot find %d in the list\n", num);
-        return;
-    }
     if (cursor->value == num){
         del_head_elem_list_Int (&cursor);
         *head = cursor;
@@ -49,7 +45,7 @@ void remove_elem_list_Int(NODE **head, int num){
             free(cursor); // delete this node
         }
         else {
-            printf("Error!Cannot find %d in the list\n", num);
+            printf("Error!Cannot firnd %d in the list\n", num);
         }
     }
 }
