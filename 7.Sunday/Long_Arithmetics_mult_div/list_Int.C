@@ -4,7 +4,7 @@
 #include <stdlib.h>  /* malloc, free exit */
 #include <ctype.h> /* isspace*/
 
-#define NO_elem_for_remove "Error!Cannot find %d in the list\n"
+#define NO_elem_to_remove "Error!Cannot find %d in the list\n"
 
 
 
@@ -84,12 +84,13 @@ void del_head_elem_list_Int (NODE **head){
 void remove_elem_list_Int (NODE **head, int num){
     // list empty
     if (*head == NULL){
-      printf ( NO_elem_for_remove , num);
+      printf ( NO_elem_to_remove , num);
       return;
     }
     //else
     NODE *cursor = (*head);
-    // delete head element
+
+    //head = value
     if (cursor->value == num){
         del_head_elem_list_Int (&cursor);
         *head = cursor;
@@ -103,7 +104,7 @@ void remove_elem_list_Int (NODE **head, int num){
             free (cursor); // delete this node
         }
         else {
-            printf (NO_elem_for_remove , num);
+            printf (NO_elem_to_remove , num);
         }
     }
 }
@@ -122,3 +123,24 @@ NODE *find_prev_for_equal_elem_Int_list (NODE *cursor, const int num ){
     }
     return (previous);
 }
+
+//is list = 0 or empty
+int is_List_Null (NODE *head){
+    if (head == NULL){
+        return (Yes);
+    }
+    else if ((head->value ==0) && (head->next == NULL)){
+        return (Yes);
+    }
+    else {
+        return (No);
+    }
+}
+
+//push 0
+void make_list_Int_NULL (NODE **res){
+    del_list_Int (res);
+    push_to_list_Int ( res, 0);
+}
+
+

@@ -1,18 +1,12 @@
 #ifndef LIST_INT_H
 #define LIST_INT_H
 
-class list_int_h
-{
-public:
-    list_int_h();
-};
-
-#endif // LIST_INT_H
-
 struct NODE {
     int value;
     struct NODE *next;
 };
+
+typedef enum {Yes = 1, No = 0} check_it;
 
 void reverse_Int_list (NODE **head);//reverse int list
 void print_list_Int (const NODE *head); //print list
@@ -27,4 +21,10 @@ void remove_elem_list_Int (NODE **head, int num);
 // we sure that head !== num
 NODE *find_prev_for_equal_elem_Int_list (NODE *cursor, const int num );
 
+//is list = 0 or empty
+int is_List_Null (NODE *head);
+// push 0
+void make_list_Int_NULL (NODE **res);
+
+#endif // LIST_INT_H
 

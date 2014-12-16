@@ -1,5 +1,14 @@
 #include "mult_long.h"
+#include <stdio.h>
+#include <ctype.h> /* isspace*/
 
-mult_long::mult_long()
-{
-}
+
+
+
+
+
+
+
+
+
+
