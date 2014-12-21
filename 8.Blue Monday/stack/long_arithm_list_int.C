@@ -3,36 +3,19 @@
 #include <ctype.h> /* isspace*/
 
 
-//deletes list and writes to list long number
-void read_Long_num_list (Long_num_list *num, char ch){// need for input first symbol of num
+//reads list long number, not change sign, ch is first digit
+// direct -> back order
+void read_Long_num_list (Long_num_list *num, char ch){
 
-    del_Long_num_list (num); // make list empty
-
-    // sets the sign
-    if (ch == '-') {
-        num->sign = negative;
-    }
-    else {
-        num->sign = positive;
-        push_to_list_Int (&(num->head) , ch - '0'); // puts first digit of num
-    }
-
-    scanf ("%c",&ch); // next elem
-    while  (ch == '0') {   // del top zeros
-        scanf ("%c",&ch); // next elem
-    }
-
-    while  (isdigit(ch)) {
+    do {
         push_to_list_Int (&(num->head), ch - '0');
         scanf ("%c",&ch); // next elem
-    }
-    if (num->head == NULL){
-        push_to_list_Int(&(num->head), 0);
-    }
+    } while  (isdigit(ch));
 }
 
 // writes with \n in the end
-void write_Long_num_list ( Long_num_list num){ // num const
+// back -> direct order
+ void write_Long_num_list ( Long_num_list num){ // num const
     if (num.sign == negative){
         printf ("-");
     }
@@ -54,12 +37,25 @@ void del_Long_num_list (Long_num_list (*num)){
     num->sign = empty;
 }
 
-//reverse one-way list
+//reverse number (changes order)
 void reverse_Long_Int_list (Long_num_list *num){
     reverse_Int_list(& num->head );
 }
 
+void copy_Long_list_Int (Long_num_list *where, Long_num_list what){//change order
+    if ( where->head != NULL){
+        del_Long_num_list (where);
+    }
+    where->sign = what.sign;
+
+    while (what.head != NULL){
+        push_to_list_Int (& where->head , what.head->value );
+        what.head = what.head->next;
+    }
+}
+
 // general multiplication
+//  back -> direct order
 void mult_Long_Int_list (Long_num_list *product, Long_num_list multiplicand,
                     Long_num_list multiplier){
     if (is_List_Null(multiplicand.head) || is_List_Null(multiplier.head)){
@@ -79,10 +75,12 @@ void mult_Long_Int_list (Long_num_list *product, Long_num_list multiplicand,
         digit = multiplier.head->value;
         sum = NULL;
         mult_num_to_digit_Long_Int_list (&sum, multiplicand.head, digit);
-        reverse_Int_list (&sum);
+        //sum
+        reverse_Int_list (&sum);//sum in back order
 
-        reverse_Long_Int_list(&res);
+        reverse_Long_Int_list(&res);//  to back
         sum_one_sign_first_list_shifted_Int_Long (& res.head, sum, res.head, shift);
+        // res in
 
         shift ++;
         del_list_Int (&sum);
@@ -90,11 +88,12 @@ void mult_Long_Int_list (Long_num_list *product, Long_num_list multiplicand,
     }
 
     del_Long_num_list (product);
-    *product= res;
+    *product= res; //res in
 }
 
 
 // multiply long number and digit
+// back -> direct order
 void mult_num_to_digit_Long_Int_list
 (NODE **result, NODE *list, const int digit){
     if (digit == 0){
@@ -102,7 +101,7 @@ void mult_num_to_digit_Long_Int_list
         return;
     }
     int jump = 0;
-    int product; //
+    int product;
     while (list){
         product =  digit * list->value + jump;
         push_to_list_Int (result, product % BASE );
@@ -115,7 +114,7 @@ void mult_num_to_digit_Long_Int_list
 }
 
 void sum_one_sign_first_list_shifted_Int_Long (NODE **res,
-            NODE *shifted, NODE *staticList, int shift){
+            NODE *shifted, NODE *staticList, int shift){// back -> direct order
     int shift_note = shift;
     while (shift != 0) {
         push_to_list_Int (&shifted, 0);
@@ -132,10 +131,11 @@ void sum_one_sign_first_list_shifted_Int_Long (NODE **res,
 
 
 // general sum
+// back -> direct order
 void sum_Long_Int_list (Long_num_list *sum, const Long_num_list augend,
                         const Long_num_list addend){
     if (augend.sign*addend.sign == positive){
-        sum_one_sign_Int_list (sum,augend,addend); // in sum elements have one sign
+        sum_one_sign_Int_list (sum,augend,addend);
     }
     else if (augend.sign == positive){// addend.sign = negative
         sub_Long_pos_Int_list  (sum, augend, neg_elem_Long_Int_list (addend));
@@ -146,12 +146,102 @@ void sum_Long_Int_list (Long_num_list *sum, const Long_num_list augend,
         sum->sign = -sum->sign; // value = augend - addend
     }
 }
-// general
+
+// general sub
+// back -> direct order
 void sub_Long_Int_list (Long_num_list (*res),const Long_num_list minuend,
                         const Long_num_list subtrahend){
-    sum_Long_Int_list (res,minuend, neg_elem_Long_Int_list(subtrahend));
+    sum_Long_Int_list (res,minuend, neg_elem_Long_Int_list (subtrahend));
 }
 
+
+// res = augend + addend when summends have one sign
+// back -> direct order
+void sum_one_sign_Int_list (Long_num_list *res, Long_num_list augend,
+                            Long_num_list addend){ // const augend, addend
+    res->sign = augend.sign;
+
+    sum_one_sign_no_change_sign_Int_list (&res->head, augend.head, addend.head);
+}
+
+void sum_one_sign_no_change_sign_Int_list (NODE **res, NODE *augend,
+                            NODE *addend){ // back -> direct order
+    int jump = 0; // jumps to next rank
+    NODE *sum = NULL;
+
+    NODE *head = sum_one_length_Int_list_return_not_ended_list (&sum,  augend,
+                                                                addend, &jump);
+    // head = head of not ended list, changes jump and res = augent + addend,
+    // size(res) = min (sizes of augent and addend), not change sign
+
+    add_sum_of_rest_list_and_jump_Int_list (& sum, head, jump);
+
+    del_list_Int (res);
+    *res = sum;
+}
+
+// returns head of not ended list
+// changes jump and res = augend + addend (it cuts longest and sum)
+// size(res) = min (sizes of augent and addend), not change sign
+NODE * sum_one_length_Int_list_return_not_ended_list (NODE **res,
+                                NODE *augend,NODE *addend, int *jumper){
+    int jump = *jumper;
+    int sum; //sum = augend + addend + jump
+    while (augend && addend){
+        sum =  augend->value + addend->value + jump;
+        push_to_list_Int (res, sum % BASE ); // res = sum %BASE
+        jump = sum / BASE ;
+        augend = augend->next;
+        addend = addend->next;
+    }
+    *jumper = jump;
+    if (augend != NULL){
+        return (augend);
+    }
+    else{
+        return (addend);
+    }
+}
+
+//add to res sum of the rest of list and jump
+void add_sum_of_rest_list_and_jump_Int_list (NODE **res,
+                                NODE *head, int jump){
+    int sum;
+    while (head != NULL){ // head is one of summands heads that not ended
+        sum =  head->value + jump;
+        push_to_list_Int (res, sum % BASE  ); // res = sum %BASE
+        jump = sum / BASE ;
+        head = head->next;
+    }
+    if (jump){
+        push_to_list_Int (res , jump);
+    }
+}
+
+
+// difference = minuend - subtrahend when minuend and subtrahend positive
+// back -> direct order
+void sub_Long_pos_Int_list  (Long_num_list *diff, Long_num_list minuend,
+                             Long_num_list subtrahend){
+    int indicator = compare_Long_Int_list(minuend,subtrahend);
+    if (indicator == equal){
+       make_Num_Int_NULL (diff);
+    }
+    else if (indicator == more){
+        sub_Long_pos_minuend_bigger_Int_list (&diff->head ,minuend.head ,
+                                              subtrahend.head);
+        diff->sign = positive;
+    }
+    else  {// less
+        sub_Long_pos_minuend_bigger_Int_list (&diff->head ,subtrahend.head ,
+                                              minuend.head);
+        diff->sign = negative;
+    }
+
+    del_top_zeros_Int_list (diff);
+}
+
+// when num in direct ord
 void del_top_zeros_Int_list (Long_num_list *num){
     while (num->head && (num->head->value == 0) ){
             del_head_elem_list_Int (& num->head);
@@ -162,95 +252,16 @@ void del_top_zeros_Int_list (Long_num_list *num){
     }
 }
 
-// res = augend + addend when summends have one sign
-void sum_one_sign_Int_list (Long_num_list *res, Long_num_list augend,
-                            Long_num_list addend){ // const augend, addend
-    res->sign = augend.sign;
-
-    sum_one_sign_no_change_sign_Int_list (&res->head, augend.head, addend.head);
-}
-
-void sum_one_sign_no_change_sign_Int_list (NODE **res, NODE *augend,
-                            NODE *addend){ // const augend, addend
-    int higher = 0; // jumps to next rank
-    NODE *sum = NULL;
-
-    NODE *head = sum_one_length_Int_list_return_not_ended_list (&sum,  augend,
-                                                                addend, &higher);
-    // head = head of not ended list, changes higher and res = augent + addend,
-    // size(res) = min (sizes of augent and addend), not change sign
-
-    add_sum_of_rest_list_and_higher_Int_list (& sum, head, higher);
-
-    del_list_Int (res);
-    *res = sum;
-}
-
-// returns head of not ended list
-// changes higher and res = augend + addend (it cuts longest and sum)
-// size(res) = min (sizes of augent and addend), not change sign
-NODE * sum_one_length_Int_list_return_not_ended_list (NODE **res,
-                                NODE *augend,NODE *addend, int *high){
-    int higher = *high;
-    int sum; //sum = augend + addend + higher
-    while (augend && addend){
-        sum =  augend->value + addend->value + higher;
-        push_to_list_Int (res, sum % BASE ); // res = sum %BASE
-        higher = sum / BASE ;
-        augend = augend->next;
-        addend = addend->next;
-    }
-    *high = higher;
-    if (augend != NULL){
-        return (augend);
-    }
-    else{
-        return (addend);
-    }
-}
-
-//add to res sum of the rest of list and higher
-void add_sum_of_rest_list_and_higher_Int_list (NODE **res,
-                                NODE *head, int higher){
-    int sum;
-    while (head != NULL){ // head is one of summands heads that not ended
-        sum =  head->value + higher;
-        push_to_list_Int (res, sum % BASE  ); // res = sum %BASE
-        higher = sum / BASE ;
-        head = head->next;
-    }
-    if (higher){
-        push_to_list_Int (res , higher);
-    }
-}
-
-
-// difference = minuend - subtrahend when minuend and subtrahend positive
-void sub_Long_pos_Int_list  (Long_num_list *diff, Long_num_list minuend,
-                             Long_num_list subtrahend){
-    int indicator = compare_Long_Int_list(minuend,subtrahend);
-    if (indicator == equal){
-       make_Num_Int_NULL (diff);
-    }
-    else if (indicator == more){
-        sub_Long_pos_minuend_bigger_Int_list (&diff->head ,minuend.head ,subtrahend.head);
-        diff->sign = positive;
-    }
-    else  {// less
-        sub_Long_pos_minuend_bigger_Int_list (&diff->head ,subtrahend.head ,minuend.head);
-        diff->sign = negative;
-    }
-
-    del_top_zeros_Int_list (diff);
-}
-
 // difference = minuend - subtrahend  when minuend and subtrahend positive
 // and minuend bigger than subtrahend
-void sub_Long_pos_minuend_bigger_Int_list  (NODE **diff, NODE *minuend, NODE * subtrahend){
+// back -> direct order
+void sub_Long_pos_minuend_bigger_Int_list (NODE **diff, NODE *minuend,
+                                            NODE * subtrahend){
     int debt = 0;
     NODE *res = NULL;
 
-    sub_subtrahend_change_debt_head_minuend_Int_list (&res,&minuend, subtrahend, &debt);
+    sub_subtrahend_change_debt_head_minuend_Int_list (&res,&minuend, subtrahend,
+                                                      &debt);
     sub_minuend_debt_Int_list (&res, minuend, debt);
 
     del_list_Int (diff);
@@ -300,6 +311,7 @@ void sub_minuend_debt_Int_list (NODE **diff,
 
 
 // "0" - a = b ; "1" - a > b ; "-1" - a < b
+// when a, b in back order
 int compare_Long_Int_list (Long_num_list a, Long_num_list b){ // a, b const
     int indicator = equal;
     while (a.head && b.head){
@@ -333,7 +345,6 @@ void make_Num_Int_NULL (Long_num_list *res){
     make_list_Int_NULL (& res->head);
     res->sign = positive;
 }
-
 
 
 

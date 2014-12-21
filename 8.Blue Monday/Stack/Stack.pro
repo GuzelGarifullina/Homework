@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2014-12-07T15:15:13
+# Project created by QtCreator 2014-12-16T19:07:42
 #
 #-------------------------------------------------
 
@@ -8,16 +8,11 @@ QT       += core
 
 QT       -= gui
 
-TARGET = Long_arithmetics_sum_sub
+TARGET = Stack
 CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
 
 
-SOURCES += main.C \
-    list_Int.C
-
-HEADERS += \
-    list_Int.h \
-    Long_Arithm_list_Int.h
+SOURCES += main.C

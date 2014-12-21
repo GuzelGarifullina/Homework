@@ -2,9 +2,8 @@
  * Author: Garifullina Guzel, 171 group */
 
 #include <stdio.h>
-//#include "long_arithm_list_int.h" //long arithmetics based on one-way list
+#include "long_arithm_list_int.h" //long arithmetics based on one-way list
 #include "formating_input.h"
-#include "mult_long.h"
 
 
 int main(void) {
@@ -22,7 +21,8 @@ int main(void) {
     read_Long_num_list (&b, ch);
      c.head = NULL;
      c.sign = 1;
-//sum_one_sign_first_list_shifted_Int_Long(&c.head, a.head,b.head,3);
+    // sum_Long_Int_list(&c,a,b);
+   // sum_one_sign_first_list_shifted_Int_Long (&c.head,a.head,b.head,1);
   mult_Long_Int_list(&c,a,b);
    // reverse_Long_Num_Int_list(&b)
    // c.sign = 1;
@@ -30,7 +30,12 @@ int main(void) {
   //  write_Long_num_list(a);
    // write_Long_num_list(b);
 
-return 1;
+    del_Long_num_list(&a);
+    del_Long_num_list(&b);
+    del_Long_num_list(&c);
+
+
+return 0;
 }
 
    /* sum_Long_Int_list(&c,a,b);
@@ -41,9 +46,6 @@ return 1;
     write_Long_num_list(c);
 
     // free memory
-    del_Long_num_list(&a);
-    del_Long_num_list(&b);
-    del_Long_num_list(&c);
 
 
     return (0);

@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2014-12-09T21:30:10
+# Project created by QtCreator 2014-12-16T19:12:19
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core
 
 QT       -= gui
 
-TARGET = Long_Arithmetics_mult_div
+TARGET = stack
 CONFIG   += console
 CONFIG   -= app_bundle
 
@@ -16,13 +16,15 @@ TEMPLATE = app
 
 
 SOURCES += main.C \
+    long_arithm_list_int.C \
+    list_writer.C \
     list_Int.C \
     formating_input.C \
-    list_writer.C \
-    long_arithm_list_int.C
+    stack_one_way_list.C
 
 HEADERS += \
+    long_arithm_list_int.h \
+    list_writer.h \
     list_Int.h \
     formating_input.h \
-    list_writer.h \
-    long_arithm_list_int.h
+    stack_one_way_list.h

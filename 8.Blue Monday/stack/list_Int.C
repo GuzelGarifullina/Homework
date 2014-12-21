@@ -4,9 +4,18 @@
 #include <stdlib.h>  /* malloc, free exit */
 #include <ctype.h> /* isspace*/
 
-#define NO_elem_for_remove "Error!Cannot find %d in the list\n"
+#define NO_elem_to_remove "Error!Cannot find %d in the list\n"
 
 
+// print elements of list and \n
+void print_list_Int (const NODE *head){
+    while (head){
+        printf("%d", head->value);
+        head = head->next;
+    }
+    printf("\n");
+
+}
 
 //reverse int list
 void reverse_Int_list (NODE **head){
@@ -28,30 +37,11 @@ void reverse_Int_list (NODE **head){
 }
 
 
-// print elements of list and \n
-void print_list_Int (const NODE *head){
-    while (head){
-        printf("%d", head->value);
-        head = head->next;
-    }
-    printf("\n");
-
-}
-
 // delete list
 void del_list_Int (NODE **head){
-    while (*head != NULL){ // while list not empty deletes head element
+    while (*head != NULL){
        del_head_elem_list_Int (head);
     }
-}
-
-
-// take number and pushes to the head of list
-void push_to_list_Int(NODE **head , int new_elem){
-    NODE *tmp =  (NODE*) malloc (sizeof (NODE)); //allocates memory
-    tmp->value = new_elem; // put value to temporary node
-    tmp->next =  (*head) ;
-    (*head) = tmp;
 }
 
 //  delete head elem and return it's value
@@ -69,6 +59,17 @@ int pop_head_list_Int (NODE **head){
     return val;
 }
 
+
+// take number and pushes to the head of list
+void push_to_list_Int(NODE **head , int new_elem){
+    NODE *tmp =  (NODE*) malloc (sizeof (NODE)); //allocates memory
+    tmp->value = new_elem; // put value to temporary node
+    tmp->next =  (*head) ;
+    (*head) = tmp;
+}
+
+
+
 // delete head element
 void del_head_elem_list_Int (NODE **head){
     if (*head == NULL) { //case when list is empty
@@ -84,12 +85,13 @@ void del_head_elem_list_Int (NODE **head){
 void remove_elem_list_Int (NODE **head, int num){
     // list empty
     if (*head == NULL){
-      printf ( NO_elem_for_remove , num);
+      printf ( NO_elem_to_remove , num);
       return;
     }
     //else
     NODE *cursor = (*head);
-    // delete head element
+
+    //head = value
     if (cursor->value == num){
         del_head_elem_list_Int (&cursor);
         *head = cursor;
@@ -103,7 +105,7 @@ void remove_elem_list_Int (NODE **head, int num){
             free (cursor); // delete this node
         }
         else {
-            printf (NO_elem_for_remove , num);
+            printf (NO_elem_to_remove , num);
         }
     }
 }
@@ -122,3 +124,23 @@ NODE *find_prev_for_equal_elem_Int_list (NODE *cursor, const int num ){
     }
     return (previous);
 }
+
+//is list = 0 or empty
+int is_List_Null (NODE *head){
+    if (head == NULL){
+        return (Yes);
+    }
+    else if ((head->value ==0) && (head->next == NULL)){
+        return (Yes);
+    }
+    else {
+        return (No);
+    }
+}
+
+//push 0
+void make_list_Int_NULL (NODE **res){
+    del_list_Int (res);
+    push_to_list_Int (res, 0);
+}
+
