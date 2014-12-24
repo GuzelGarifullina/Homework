@@ -32,9 +32,13 @@ void reverse_Long_Int_list (Long_num_list *num);
 
 void copy_Long_Int_list (Long_num_list *where, Long_num_list what);//change order
 
-//returns 1 if division imposible
+//returns 1 if division imposible, make sure that remainder not negative
 // direct -> back order
 int div_Long_num_list (Long_num_list *quotient,
+                            Long_num_list numerator, Long_num_list denominator);
+//returns 1 if division imposible
+// direct -> back order
+int div_round_Long_num_list (Long_num_list *quotient,
                             Long_num_list numerator, Long_num_list denominator);
 // general
 //  back -> direct order

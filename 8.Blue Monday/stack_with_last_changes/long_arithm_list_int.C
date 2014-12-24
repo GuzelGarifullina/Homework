@@ -136,10 +136,32 @@ void copy_Int_list (NODE **where, NODE *what ){
     }
 }
 
+//returns 1 if division imposible, make sure that remainder not negative
+// direct -> back order
+int div_Long_num_list (Long_num_list *quotient,
+                            Long_num_list numerator, Long_num_list denominator){
+    Long_num_list remainder;
+    remainder.head = NULL;
+
+    int ind =  div_mod_Long_num_list (quotient, &remainder, numerator,
+                                                 denominator);
+    if (ind){
+        return (Yes);
+    }
+    if ((numerator.sign == negative) && (! is_List_Null (remainder.head))){
+        make_Num_Int_ONE (&remainder);
+        reverse_Long_Int_list (quotient);
+        sum_one_sign_Int_list (quotient, *quotient, remainder);
+    }
+    del_Long_num_list (&remainder);
+    return (No);
+}
+
+
 
 //returns 1 if division imposible
 // direct -> back order
-int div_Long_num_list (Long_num_list *quotient,
+int div_round_Long_num_list (Long_num_list *quotient,
                             Long_num_list numerator, Long_num_list denominator){
     Long_num_list remainder, remainder_copy;
     remainder.head = NULL;
