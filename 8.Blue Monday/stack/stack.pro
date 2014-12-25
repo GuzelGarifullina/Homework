@@ -20,11 +20,13 @@ SOURCES += main.C \
     list_writer.C \
     list_Int.C \
     formating_input.C \
-    stack_one_way_list.C
+    stack_one_way_list.C \
+    polish_notation.C
 
 HEADERS += \
     long_arithm_list_int.h \
     list_writer.h \
     list_Int.h \
     formating_input.h \
-    stack_one_way_list.h
+    stack_one_way_list.h \
+    polish_notation.h

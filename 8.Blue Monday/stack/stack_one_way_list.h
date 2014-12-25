@@ -16,7 +16,7 @@ void del_head_elem_stack_list_Int (Stack_of_Long_numbers **st_head);
 // take number and pushes to the head of list
 void push_to_stack_list_Int (Stack_of_Long_numbers **st_head ,
                             Long_num_list new_elem);
-void pop_head_stack_list_Int (Long_num_list *put_head,
+int pop_head_stack_list_Int (Long_num_list *put_head,
                               Stack_of_Long_numbers **st_head);
 
 int is_stack_empty (Stack_of_Long_numbers  *st_head);
