@@ -8,12 +8,12 @@
 
 int calculate_polish_notation_Int_list (void);
 int print_head_elem_stack_list_Int
-            (Stack_of_Long_numbers *st_head);
+            (Stack_of_Long_numbers **st_head);
 
 //read digits unites to long number
 // push long number to stack
 int read_push_stack_number_Int_list
-        (Stack_of_Long_numbers **st_head, const int sign,  char ch);
+        (Stack_of_Long_numbers **st_head, const int sign,  char *ch);
 
 // writes to stack result of operation
 // ch is operator

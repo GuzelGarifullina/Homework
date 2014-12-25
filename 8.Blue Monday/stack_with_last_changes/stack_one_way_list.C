@@ -27,7 +27,7 @@ void print_stack_list_Int  (Stack_of_Long_numbers *st_head){
         print_list_Int (st_head->value.head);
         st_head = st_head->next;
     }
-   printf ("]");
+   printf ("]\n");
 }
 
 // delete stack

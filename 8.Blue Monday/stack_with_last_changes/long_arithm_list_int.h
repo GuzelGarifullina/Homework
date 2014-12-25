@@ -20,7 +20,7 @@ typedef enum {more = 1, less = -1 , equal = 0} compare;
 
 //reads list long number, not change sign, ch is first digit
 // tells if number ended with illegal letter
-int read_Long_num_list (Long_num_list *num, char ch);// direct -> back order
+int read_Long_num_list (Long_num_list *num, char *ch);// direct -> back order
 
 // writes with \n in the end
 void write_Long_num_list (Long_num_list num);// back -> direct order

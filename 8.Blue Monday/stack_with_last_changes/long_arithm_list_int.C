@@ -78,13 +78,13 @@ int cut_to_puted_cuted_length_Int_list(NODE **put, NODE **cuted, int leng);
 
 //reads list long number, not change sign, ch is first digit
 // direct -> back order
-int read_Long_num_list (Long_num_list *num, char ch){
+int read_Long_num_list (Long_num_list *num, char *ch){
 
     do {
-        push_to_list_Int (&(num->head), ch - '0');
-        scanf ("%c",&ch); // next elem
-    } while  (isdigit(ch));
-    int illegal_letter = ((ch != '\n') && (ch !=EOF));
+        push_to_list_Int (&(num->head), *ch - '0');
+        scanf ("%c",ch); // next elem
+    } while  (isdigit(*ch));
+    int illegal_letter = (! iscntrl (*ch) && (*ch != ' ') && (*ch !='e'));
     return (illegal_letter);
 }
 
@@ -140,19 +140,28 @@ void copy_Int_list (NODE **where, NODE *what ){
 // direct -> back order
 int div_Long_num_list (Long_num_list *quotient,
                             Long_num_list numerator, Long_num_list denominator){
-    Long_num_list remainder;
+    Long_num_list remainder, one_list;
     remainder.head = NULL;
+    one_list.head = NULL;
 
     int ind =  div_mod_Long_num_list (quotient, &remainder, numerator,
                                                  denominator);
     if (ind){
         return (Yes);
     }
+
     if ((numerator.sign == negative) && (! is_List_Null (remainder.head))){
-        make_Num_Int_ONE (&remainder);
-        reverse_Long_Int_list (quotient);
-        sum_one_sign_Int_list (quotient, *quotient, remainder);
+        if (is_List_Null(quotient->head)){
+            make_Num_Int_ONE (quotient);
+            quotient->sign = remainder.sign;
+        }
+        else {
+            make_Num_Int_ONE (&one_list);
+            reverse_Long_Int_list (quotient);
+            sum_one_sign_Int_list (quotient, *quotient, one_list);
+        }
     }
+    del_Long_num_list (&one_list);
     del_Long_num_list (&remainder);
     return (No);
 }
@@ -200,8 +209,9 @@ int div_mod_Long_num_list (Long_num_list *quotient, Long_num_list *remainder,
         printf ("%s", Null_division);
         return (Yes);
     }
-
-    quotient->sign = numerator.sign * denominator.sign;
+    int sign = numerator.sign * denominator.sign;
+    quotient->sign = sign;
+    remainder->sign = sign;
     div_mod_main_Long_num_list (quotient, remainder, numerator, denominator);
 
     del_top_zeros_Int_list (remainder);
@@ -657,7 +667,7 @@ int compare_back_Int_list (NODE *a, NODE *b){ // a, b const
 //returns num with opposite sign
 Long_num_list neg_elem_Long_Int_list ( Long_num_list num){ // const num
     num.sign = - num.sign;
-    return(num);
+    return (num);
 }
 
 // push 0

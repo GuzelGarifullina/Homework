@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <ctype.h> /* isspace*/
 
-//"Division by zero", "Not enough arguments", "Unknown command"
-
 #define Not_enogh_argument "Not enough arguments\n"
 #define unknown "Unknown command\n"
 
@@ -21,32 +19,28 @@ int calculate_polish_notation_Int_list(void) {
     int sign;
     int leave = 0;
 
-    char ch;
-    do {
-        scanf("%c", &ch);
-        if (ch !='\n'){
+    char ch ;
+    scanf("%c", &ch);
+    while (ch != 'e')  {
+        if (! iscntrl (ch) && (ch !=' ')) {
            if (ch == '-'){
               scanf("%c", &ch);
-              if (ch == '\n'){
+              if (iscntrl (ch) || (ch == ' ')){
                 leave = operations_polish_notat_stack_list_Int (&st_head, '-');
               }
               else { // digit
                 sign = negative;
-                read_push_stack_number_Int_list (&st_head, sign, ch);
+                leave = read_push_stack_number_Int_list (&st_head, sign, &ch);
               }
            }
            else if (isdigit(ch)){
                sign = positive;
-               leave = read_push_stack_number_Int_list (&st_head, sign, ch);
+               leave = read_push_stack_number_Int_list (&st_head, sign, &ch);
            }
 
            else if (ch == '='){
-               leave = print_head_elem_stack_list_Int (st_head);
+               leave = print_head_elem_stack_list_Int (&st_head);
            }
-           // !!!!!!
-           else if (ch == EOF){
-                   break;
-               }
            else if (is_operand(ch)){// operand
                leave = operations_polish_notat_stack_list_Int (&st_head, ch);
            }
@@ -60,7 +54,11 @@ int calculate_polish_notation_Int_list(void) {
          del_stack_list_Int (&st_head);
          return (Yes);
      }
-   } while (ch != EOF);
+     if (ch == 'e'){
+         break;
+     }
+     scanf("%c", &ch);
+   }
 
    print_stack_list_Int (st_head);
    del_stack_list_Int (&st_head);
@@ -70,7 +68,7 @@ int calculate_polish_notation_Int_list(void) {
 //read digits unites to long number
 // push long number to stack
 int read_push_stack_number_Int_list
-        (Stack_of_Long_numbers **st_head, const int sign, char ch){
+        (Stack_of_Long_numbers **st_head, const int sign, char *ch){
     Long_num_list long_num;
     long_num.head = NULL;
     long_num.sign = sign;
@@ -137,20 +135,22 @@ int operations_polish_notat_stack_list_Int
 
 
 int print_head_elem_stack_list_Int
-            (Stack_of_Long_numbers *st_head){
+            (Stack_of_Long_numbers **st_head){
     Long_num_list a;
     a.head = NULL;
 
     int no_elem;
-    no_elem = pop_head_stack_list_Int (&a, &st_head);
+    no_elem = pop_head_stack_list_Int (&a, st_head);
     if (no_elem){
         printf ( Not_enogh_argument);
         }
     else {
+        reverse_Long_Int_list (&a);
         write_Long_num_list (a);
         printf ("\n");
     }
-    push_to_stack_list_Int (&st_head, a);
+    reverse_Long_Int_list (&a);
+    push_to_stack_list_Int (st_head, a);
     del_Long_num_list (&a);
     return (no_elem);
 }
