@@ -79,12 +79,15 @@ int cut_to_puted_cuted_length_Int_list(NODE **put, NODE **cuted, int leng);
 //reads list long number, not change sign, ch is first digit
 // direct -> back order
 int read_Long_num_list (Long_num_list *num, char *ch){
-
+    int indicator = 0;
     do {
         push_to_list_Int (&(num->head), *ch - '0');
-        scanf ("%c",ch); // next elem
-    } while  (isdigit(*ch));
+        indicator = (scanf ("%c",ch) == EOF); // next elem
+    } while  (isdigit(*ch) && (!indicator));
     int illegal_letter = (! iscntrl (*ch) && (*ch != ' ') && (*ch !='e'));
+    if (indicator){
+        return (2);
+    }
     return (illegal_letter);
 }
 

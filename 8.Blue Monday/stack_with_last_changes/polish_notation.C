@@ -8,6 +8,7 @@
 #define Not_enogh_argument "Not enough arguments\n"
 #define unknown "Unknown command\n"
 
+
 // checks is it if it +, -, *, /
 // else returns no
 int is_operand (char ch);
@@ -17,47 +18,52 @@ int calculate_polish_notation_Int_list(void) {
     Stack_of_Long_numbers *st_head;
     st_head = NULL;
     int sign;
-    int leave = 0;
+    int error = 0;
 
     char ch ;
-    scanf("%c", &ch);
-    while (ch != 'e')  {
+//    while (~scanf("%c", &ch))  {
+    while (scanf("%c", &ch) != EOF){
         if (! iscntrl (ch) && (ch !=' ')) {
            if (ch == '-'){
-              scanf("%c", &ch);
-              if (iscntrl (ch) || (ch == ' ')){
-                leave = operations_polish_notat_stack_list_Int (&st_head, '-');
+              int indicator = scanf("%c", &ch);
+              if (iscntrl (ch) || (ch == ' ') || (indicator == EOF)){
+                error = operations_polish_notat_stack_list_Int (&st_head, '-');
+                if (error == 2){
+                    break;
+                }
               }
               else { // digit
                 sign = negative;
-                leave = read_push_stack_number_Int_list (&st_head, sign, &ch);
+                error = read_push_stack_number_Int_list (&st_head, sign, &ch);
+                if (error == 2){
+                    break;
+                }
               }
            }
            else if (isdigit(ch)){
                sign = positive;
-               leave = read_push_stack_number_Int_list (&st_head, sign, &ch);
+               error = read_push_stack_number_Int_list (&st_head, sign, &ch);
+               if (error == 2){
+                   break;
+               }
            }
 
            else if (ch == '='){
-               leave = print_head_elem_stack_list_Int (&st_head);
+               error = print_head_elem_stack_list_Int (&st_head);
            }
            else if (is_operand(ch)){// operand
-               leave = operations_polish_notat_stack_list_Int (&st_head, ch);
+               error = operations_polish_notat_stack_list_Int (&st_head, ch);
            }
            else {
                printf (unknown);
-               leave = Yes;
+               error = Yes;
            }
        }
 
-     if (leave){
+     if (error){
          del_stack_list_Int (&st_head);
          return (Yes);
      }
-     if (ch == 'e'){
-         break;
-     }
-     scanf("%c", &ch);
    }
 
    print_stack_list_Int (st_head);
@@ -76,7 +82,7 @@ int read_push_stack_number_Int_list
     int illigal_letter = read_Long_num_list (&long_num, ch );
     push_to_stack_list_Int (st_head, long_num);
     del_Long_num_list (&long_num);
-    if (illigal_letter){
+    if (illigal_letter == Yes){
         printf (unknown );
     }
     return (illigal_letter);
