@@ -145,6 +145,9 @@ void sum_Long_Int_list (Long_num_list *sum, const Long_num_list augend,
         sub_Long_pos_Int_list  (sum, neg_elem_Long_Int_list (augend), addend);
         sum->sign = -sum->sign; // value = augend - addend
     }
+    if (is_List_Null (sum->head)){
+        sum->sign = positive;
+    }
 }
 
 // general sub

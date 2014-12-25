@@ -5,7 +5,6 @@
 #include <stdlib.h>  /* malloc, free exit */
 #include <ctype.h> /* isspace*/
 
-#define Error "\nError!Stack ended! \n"
 
 // print elements of stack and \n between
 void print_stack_list_Int  (Stack_of_Long_numbers *st_head){
@@ -51,14 +50,13 @@ void push_to_stack_list_Int (Stack_of_Long_numbers **st_head ,
 
 
 //  delete head elem of stack and return it's value
-// if head empty prints Error
-void pop_head_stack_list_Int (Long_num_list *put_head,
+// if head empty function says No
+int pop_head_stack_list_Int (Long_num_list *put_head,
                               Stack_of_Long_numbers **st_head){
     Stack_of_Long_numbers *prev = NULL;
 
     if (*st_head == NULL) {
-        printf ("%s", Error);
-        return ;
+        return (No);
     }
 
     prev = (*st_head);    // to not lose head of stack
@@ -67,6 +65,7 @@ void pop_head_stack_list_Int (Long_num_list *put_head,
 
     del_Long_num_list (&prev->value);
     free (prev); // delete ex-head and free memory
+    return (Yes);
 }
 
 
